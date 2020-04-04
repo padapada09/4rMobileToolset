@@ -1,0 +1,12 @@
+{
+  "name": "4r-mobile-toolset",
+  "version": "0.0.6",
+  "description": "Toolset para el equipo de desarrollo Mobile en 4rSoluciones",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Francisco Giancarelli <francisco.giancarelli@4rsoluciones.com>",
+  "license": "ISC",
+  "dependencies": {}
+}
