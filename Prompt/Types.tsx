@@ -10,6 +10,11 @@ export interface PromptOptions {
     actions : Array<Array<PromptAction>>
 }
 
+export interface PromptResponse {
+    value: string,
+    input: string
+}
+
 export interface PromptProps {
     style? : {
         card?: Object,
@@ -20,6 +25,6 @@ export interface PromptProps {
         text?: Object,
         input?: Object
     },
-    options : PromptOptions,
-    onSubmit : (value:object) => void
+    options : PromptOptions | string,
+    onSubmit : (value:PromptResponse) => void
 }

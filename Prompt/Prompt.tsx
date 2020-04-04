@@ -1,10 +1,18 @@
 import React, { useState, useEffect, FunctionComponent, ReactElement } from 'react';
 import { Animated, View, StyleSheet, Text, TouchableOpacity,Dimensions, ScrollView, TextInput } from 'react-native';
-import { PromptProps } from './Types'; 
+import { PromptProps, PromptOptions } from './Types'; 
 
 const Prompt : FunctionComponent<PromptProps> = (props : PromptProps) : ReactElement =>
 {
 
+    let options: PromptOptions;
+
+    if (typeof props.options === 'string') 
+    {
+        options = {title: props.options, actions: [[{title: 'OK', value: 'OK'},{title: 'CANCEL', value: 'CANCEL'}]]};
+    }else{
+        options = props.options;
+    }
     const [top] = useState(new Animated.Value(-Math.round(Dimensions.get('window').height)));
     const [input, setInput] = useState('');
 
@@ -49,7 +57,6 @@ const Prompt : FunctionComponent<PromptProps> = (props : PromptProps) : ReactEle
             elevation: 10,
             ...card_style,
             position: 'absolute',
-            zIndex: 99999,
             alignItems: 'center'
         },
         actions: {
@@ -98,25 +105,25 @@ const Prompt : FunctionComponent<PromptProps> = (props : PromptProps) : ReactEle
         <Animated.View style={{...style.card, transform: [{translateY: top}]}}>
             <View style={style.title}>
                 <Text style={{...style.text, fontSize: (style.text.fontSize + 5)}}>
-                    {props.options.title}
+                    {options.title}
                 </Text>
             </View>
             <ScrollView style={style.content}>
                 <Text style={{...style.text, textAlign: 'justify'}}>
-                    {props.options.content}
+                    {options.content}
                 </Text>
             </ScrollView>
             {
-                props.options.input ?
+                options.input ?
                     <TextInput
                     underlineColorAndroid='black' 
                     style={style.input}
-                    placeholder={(typeof props.options.input) === 'string' ? props.options.input.toString() : 'Input...'}
+                    placeholder={(typeof options.input) === 'string' ? options.input.toString() : 'Input...'}
                     onChangeText={(new_input) => setInput(new_input)}/>
                 : undefined
             }
             {
-                props.options.actions.map((action_set,key) =>
+                options.actions.map((action_set,key) =>
                     <View key={key} style={style.actions}>
                     {
                         action_set.map((action,inner_key) => ( 

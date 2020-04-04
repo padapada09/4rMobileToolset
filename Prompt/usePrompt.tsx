@@ -1,6 +1,7 @@
-import React, { useState, ReactElement } from 'react';
+import React, { useState, ReactElement, useEffect } from 'react';
 import Prompt from './Prompt';
-import { PromptOptions } from './Types';
+import { PromptOptions, PromptResponse } from './Types';
+import { View } from 'react-native';
 
 /**
  * Hook para pedir un contenedor de Prompts, y una función 'prompt' para 
@@ -31,22 +32,22 @@ import { PromptOptions } from './Types';
  *      .catch(err => console.log(err))
  *  }
  */
-const usePrompt = () : [Array<ReactElement>, (options: PromptOptions) => Promise<object>] =>
+const usePrompt = () : [Array<ReactElement>, (options: PromptOptions|string) => Promise<PromptResponse>] =>
 {
 
     const initialPrompts:Array<ReactElement> = [];
 
     const [prompts, setPrompts] = useState(initialPrompts);
 
-    const prompt = (options: PromptOptions) : Promise<object> => new Promise<object>((res, rej) =>
+    const prompt = (options:PromptOptions|string) : Promise<PromptResponse> => new Promise<PromptResponse>((res, rej) =>
     {
         let key = Math.random()*99999;
-        while (prompts.find(prompt => prompt.key === key)) key = Math.random()*99999
+        while (prompts.find(prompt => prompt.key === key)) key = Math.random()*99999;
         const prompt =
             <Prompt
             key={key}
             options={options}
-            onSubmit={(value) => {
+            onSubmit={(value:PromptResponse) => {
                 res(value);
                 setPrompts([...(prompts.filter(prompt => prompt.key !== key))]);
             }} />;
